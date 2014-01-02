@@ -1,0 +1,29 @@
+const
+  a=5,b=6,c='x',d='y';
+var
+  i,j:integer;
+  m,n:char;
+  q:array[10]of integer;
+  p:array[20]of char;
+function test(ta : integer;var tb:integer):integer;
+begin
+test:=test;
+test:=a;
+test:=test(a,i);
+test:=q[6]*test(a,i);
+test:=q[1]*test;
+end;
+begin
+i:=a;
+i:=a+b;
+i:=b*c-d;
+j:=i*(i-a);
+j:=p[i]*q[i-5];
+m:=n;
+m:=i;
+m:=c;
+n:=m*d+a;
+n:=p[4];
+q[1]:=i*q[2];
+p[i+m-n]:=q[c*d];
+end.

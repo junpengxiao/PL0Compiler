@@ -1,0 +1,73 @@
+#ifndef SYMBOLTABLE_H
+#define SYMBOLTABLE_H
+#include<iostream>
+#include<string>
+#include<stack>
+#include<vector>
+enum SymbolKind {
+	constsk,varsk,parask,funcsk,procsk
+};
+enum SymbolType {
+	integerst,charst,stringst,arrOfInt,arrOfCh
+};
+class SymbolItem {
+private:
+	std::string name;
+	SymbolKind kind;
+	SymbolType type;
+	int value,size;
+	std::string strvalue;
+	int offset;
+public:
+	SymbolItem(std::string name,SymbolKind kind,SymbolType type,int value);
+	SymbolItem(std::string name,SymbolKind kind,SymbolType type,std::string strvalue);
+	 void SetOffset(int offset);
+	 void SetType(SymbolType type);
+	 void SetValue(int value);
+	 void SetValue(std::string strvalue);
+	 int GetOffset();
+    std::string GetName();
+	SymbolKind GetKind();
+	 SymbolType GetType();
+	 int GetValue();
+	 std::string GetStrvalue();
+	 int GetSize();
+	void UpdateSize();
+    void UpdateSize(int n);
+};
+class SymbolTable {
+private:
+	int level,size,paraNum;
+	SymbolTable* father;
+	std::vector<SymbolItem> table;
+	SymbolType type;
+	int value,label;
+	std::string strvalue;
+	bool CheckingExist(std::string name);
+    std::string name;
+    SymbolKind kind;
+public:
+	SymbolTable(int level,SymbolTable* father,std::string name,SymbolKind kind);
+     SymbolTable* GetFather();
+	 int GetLevel();
+	 void Push(std::string name,SymbolKind kind,SymbolType type,int value);
+	 void Push(std::string name,SymbolKind kind,SymbolType type,std::string value);
+	 void Push(std::string name,SymbolKind kind);
+	 void Pop();//Bounder checking
+	 SymbolItem Top();//Bounder checking
+	 void SetType(SymbolType type);
+	 void SetValue(int value);
+	 void SetValue(std::string strvalue);
+     void SetTypeValue(SymbolType type,int value);
+     void SetTypeValue(SymbolType type,std::string value);
+	 void FillBack();
+	 void SetParaNum(int num);
+     int GetSize();
+     int GetOffset(std::string name);
+    std::string GetName();
+    SymbolKind GetKind();
+    SymbolItem* GetItem(std::string name);
+    SymbolItem* GetItem(int index);
+    void UpdateSize();
+};
+#endif

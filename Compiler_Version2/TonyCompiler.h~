@@ -1,0 +1,34 @@
+#define TONYDEBUG
+
+#ifndef TONYCOMPILER_H
+#define TONYCOMPILER_H
+#include<sstream>
+#include<iostream>
+#include<fstream>
+#include<string>
+//Global Variable Declaration
+#define MaxN 512
+#ifdef TONYDEBUG
+extern std::ofstream interResult;
+#else //intermediate result transmission
+extern std::stringstream interResult;
+#endif
+extern std::string token;//processing symbol
+extern int symbol; //processing symbol type
+extern int number; //integer or something 
+extern int lineCounter; //count the line number of program
+extern std::string strline;//processing line
+extern int strlnPtr;//pointer of strline
+extern char chNow;//processing char
+extern int symbolCounter;
+extern std::ifstream infile;//infile stream
+extern std::ofstream logfile;//log stream
+
+#include "TypeCode.h" // Define tokens code
+
+//Declare functions
+void GetNextSym();
+char TouchNextChar();
+std::string translate(int num);
+void Program();
+#endif

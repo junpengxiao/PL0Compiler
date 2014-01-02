@@ -1,0 +1,51 @@
+//
+//  Parser.h
+//  Compiler_Version2
+//
+//  Created by 肖俊鹏 on 11/29/13.
+//  Copyright (c) 2013 肖俊鹏. All rights reserved.
+//
+
+#ifndef __Compiler_Version2__Parser__
+#define __Compiler_Version2__Parser__
+
+#include <iostream>
+#include "TonyCompiler.h"
+#include "SymbolTable.h"
+void Program();
+void SubProgram(SymbolTable &table);
+void ConstDeclaration(SymbolTable &table);
+void ConstDefinition(SymbolTable &table);
+void VarDeclaration(SymbolTable &table);
+void VarDefinition(SymbolTable &table);
+void ProcDeClaration(SymbolTable &table);
+void ProcHeader(SymbolTable &table);
+int GetParaList(SymbolTable &table);
+void FuncDeClaration(SymbolTable &table);
+void FuncHeader(SymbolTable &table);
+void CompoundStatement(SymbolTable &table);
+void Statement(SymbolTable &table);
+void AssignStatement(SymbolTable &table);
+std::string Expression(SymbolTable &table);
+std::string Term(SymbolTable &table);
+std::string Factor(SymbolTable &table);
+std::string FunctionCall(SymbolTable &table);
+void CheckParalist(SymbolTable &table,int num,SymbolTable &callTable);
+void IfStatement(SymbolTable &table);
+std::string Condition(SymbolTable &table);
+void RepeatStatement(SymbolTable &table);
+void ReadStatement(SymbolTable &table);
+void WriteStatement(SymbolTable &table);
+void ForStatement(SymbolTable &table);
+std::string NextTempName();
+std::string NextTempName(SymbolTable &table);
+SymbolTable* GetTableByName(std::string name);
+std::string IntToString(int x);
+bool IsFunctVar(SymbolItem &item);
+bool IsArrayVar(SymbolItem &item);
+bool IsBasicVar(SymbolItem &item,SymbolTable &table);
+bool CheckItem(std::string str,bool isArray,SymbolTable &table);
+bool CheckItem(std::string str,SymbolKind kind,SymbolTable &table);
+std::string GetArrayOffset(SymbolTable &table);
+
+#endif /* defined(__Compiler_Version2__Parser__) */

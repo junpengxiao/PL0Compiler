@@ -1,0 +1,17 @@
+//
+//  main.cpp
+//  Compiler_Version2
+//
+//  Created by 肖俊鹏 on 11/29/13.
+//  Copyright (c) 2013 肖俊鹏. All rights reserved.
+//
+
+#include <iostream>
+#include "TonyCompiler.h"
+//Define variables
+
+int main(int argc, const char * argv[])
+{
+    return 0;
+}
+

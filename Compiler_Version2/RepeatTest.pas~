@@ -1,0 +1,11 @@
+var
+a,b:integer;
+d:array[5]of integer;
+begin
+   repeat
+   begin
+      a:=2;
+      d[d[1]]:=a
+   end
+   until a=2
+ end.

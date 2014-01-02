@@ -1,0 +1,10 @@
+var
+i:integer;
+function test(var i : integer;j:integer):integer;
+begin
+   test(j,i)
+end;
+begin
+   for i:=1 to 10 do test(i,i);
+   for i:=10 downto 1 do test(i,i);
+end.

@@ -1,0 +1,20 @@
+var
+a:integer;
+function f1(var a : integer):integer;
+begin
+end;
+function f2(var a,b : integer):integer;
+var
+   c : integer;
+begin
+   a:=b+c;
+end;
+procedure p1(a : integer);
+begin
+end;
+procedure p2(b : integer;var a:integer);
+begin
+   b:=a;
+end;
+begin
+end.
