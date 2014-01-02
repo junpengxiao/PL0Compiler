@@ -1,0 +1,473 @@
+.386
+.model flat,stdcall
+option casemap:none
+
+;Include resource
+include msvcrt.inc
+include kernel32.inc
+includelib kernel32.lib
+includelib msvcrt.lib
+
+;Define C-type IO
+printf PROTO C:ptr sbyte, :vararg
+scanf PROTO C:ptr sbyte, :vararg
+
+.data
+$IOChar db "%c",0
+$IOInt db "%d",0
+$Return db 10,13,0
+
+.code
+
+@swap2 proc
+
+;Subroutine Prologue
+	push ebp
+	mov ebp,esp
+	sub esp,16
+	push edi
+	push esi
+
+;Subroutine Body
+	mov esi,[ebp+20]
+	mov eax, dword ptr [esi]
+	mov dword ptr [ebp-12], eax
+	mov esi,[ebp+16]
+	mov eax, dword ptr [esi]
+	mov esi,[ebp+20]
+	mov dword ptr [esi], eax
+	mov eax, dword ptr [ebp-12]
+	mov esi,[ebp+16]
+	mov dword ptr [esi], eax
+	mov eax, [ebp-16]
+
+;Subroutine Epilogue
+	pop esi
+	pop edi
+	mov esp,ebp
+	pop ebp
+	ret
+@swap2 endp
+	
+@qs1 proc
+
+;Subroutine Prologue
+	push ebp
+	mov ebp,esp
+	sub esp,232
+	push edi
+	push esi
+
+;Subroutine Body
+	mov esi,[ebp+20]
+	mov dword ptr [esi], 5
+	mov eax,[ebp+12]
+	add eax, [ebp+16]
+	mov [ebp-36], eax
+	mov eax,[ebp-36]
+	cdq
+	mov edi,2
+	idiv edi
+	mov [ebp-40], eax
+	mov eax, dword ptr [ebp-40]
+	mov dword ptr [ebp-44], eax
+	mov esi,[ebp+8]
+	sub esi,44
+	mov edi,[ebp-44]
+	shl edi,2
+	sub esi,edi
+	mov eax, dword ptr [esi]
+	mov dword ptr [ebp-28], eax
+	mov eax, dword ptr [ebp+16]
+	mov dword ptr [ebp-16], eax
+	mov eax, dword ptr [ebp+12]
+	mov dword ptr [ebp-20], eax
+	mov eax,[ebp-16]
+	cmp eax,[ebp-20]
+	jle @ttemp4
+	jmp @ttemp5
+@ttemp4:
+@ttemp7:
+	mov eax, dword ptr [ebp-16]
+	mov dword ptr [ebp-72], eax
+	mov esi,[ebp+8]
+	sub esi,44
+	mov edi,[ebp-72]
+	shl edi,2
+	sub esi,edi
+	mov eax,[esi]
+	cmp eax,[ebp-28]
+	jl @ttemp11
+	jmp @ttemp12
+@ttemp11:
+@ttemp14:
+	mov eax,[ebp-16]
+	add eax, 1
+	mov [ebp-100], eax
+	mov eax, dword ptr [ebp-100]
+	mov dword ptr [ebp-16], eax
+	mov eax, dword ptr [ebp-16]
+	mov dword ptr [ebp-104], eax
+	mov esi,[ebp+8]
+	sub esi,44
+	mov edi,[ebp-104]
+	shl edi,2
+	sub esi,edi
+	mov eax,[esi]
+	cmp eax,[ebp-28]
+	jge @ttemp15
+	jmp @ttemp14
+@ttemp15:
+	jmp @ttemp13
+@ttemp12:
+@ttemp13:
+	mov eax, dword ptr [ebp-20]
+	mov dword ptr [ebp-112], eax
+	mov esi,[ebp+8]
+	sub esi,44
+	mov edi,[ebp-112]
+	shl edi,2
+	sub esi,edi
+	mov eax,[esi]
+	cmp eax,[ebp-28]
+	jg @ttemp21
+	jmp @ttemp22
+@ttemp21:
+@ttemp24:
+	mov eax,[ebp-20]
+	sub eax, 1
+	mov [ebp-140], eax
+	mov eax, dword ptr [ebp-140]
+	mov dword ptr [ebp-20], eax
+	mov eax, dword ptr [ebp-20]
+	mov dword ptr [ebp-144], eax
+	mov esi,[ebp+8]
+	sub esi,44
+	mov edi,[ebp-144]
+	shl edi,2
+	sub esi,edi
+	mov eax,[esi]
+	cmp eax,[ebp-28]
+	jle @ttemp25
+	jmp @ttemp24
+@ttemp25:
+	jmp @ttemp23
+@ttemp22:
+@ttemp23:
+	mov eax,[ebp-16]
+	cmp eax,[ebp-20]
+	jle @ttemp30
+	jmp @ttemp31
+@ttemp30:
+	mov eax, dword ptr [ebp-16]
+	mov dword ptr [ebp-168], eax
+	mov esi,[ebp+8]
+	sub esi,44
+	mov edi,[ebp-168]
+	shl edi,2
+	sub esi,edi
+	push esi
+	mov eax, dword ptr [ebp-20]
+	mov dword ptr [ebp-172], eax
+	mov esi,[ebp+8]
+	sub esi,44
+	mov edi,[ebp-172]
+	shl edi,2
+	sub esi,edi
+	push esi
+	push [ebp+8]
+	push ebp
+	call @swap2
+	mov dword ptr [ebp-176], eax
+	add esp,16
+	mov eax,[ebp-16]
+	add eax, 1
+	mov [ebp-180], eax
+	mov eax, dword ptr [ebp-180]
+	mov dword ptr [ebp-16], eax
+	mov eax,[ebp-20]
+	sub eax, 1
+	mov [ebp-184], eax
+	mov eax, dword ptr [ebp-184]
+	mov dword ptr [ebp-20], eax
+	jmp @ttemp32
+@ttemp31:
+@ttemp32:
+	mov eax,[ebp-16]
+	cmp eax,[ebp-20]
+	jg @ttemp8
+	jmp @ttemp7
+@ttemp8:
+	jmp @ttemp6
+@ttemp5:
+@ttemp6:
+	mov eax,[ebp-16]
+	cmp eax,[ebp+12]
+	jl @ttemp40
+	jmp @ttemp41
+@ttemp40:
+	mov esi,[ebp+20]
+	push esi
+	push [ebp-16]
+	push [ebp+12]
+	push [ebp+8]
+	call @qs1
+	mov dword ptr [ebp-208], eax
+	add esp,16
+	jmp @ttemp42
+@ttemp41:
+@ttemp42:
+	mov eax,[ebp-20]
+	cmp eax,[ebp+16]
+	jg @ttemp45
+	jmp @ttemp46
+@ttemp45:
+	mov esi,[ebp+20]
+	push esi
+	push [ebp+16]
+	push [ebp-20]
+	push [ebp+8]
+	call @qs1
+	mov dword ptr [ebp-228], eax
+	add esp,16
+	jmp @ttemp47
+@ttemp46:
+@ttemp47:
+	mov eax, [ebp-232]
+
+;Subroutine Epilogue
+	pop esi
+	pop edi
+	mov esp,ebp
+	pop ebp
+	ret
+@qs1 endp
+	
+@main0 proc
+
+;Subroutine Prologue
+	push ebp
+	mov ebp,esp
+	sub esp,244
+	push edi
+	push esi
+
+;Subroutine Body
+	mov dword ptr [ebp-88], 9
+	mov dword ptr [ebp-100], 1
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-100]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 2
+	mov dword ptr [ebp-104], 2
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-104]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 3
+	mov dword ptr [ebp-108], 3
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-108]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 1
+	mov dword ptr [ebp-112], 4
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-112]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 8
+	mov dword ptr [ebp-116], 5
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-116]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 6
+	mov dword ptr [ebp-120], 6
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-120]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 5
+	mov dword ptr [ebp-124], 7
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-124]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 0
+	mov dword ptr [ebp-128], 8
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-128]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 9
+	mov dword ptr [ebp-132], 9
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-132]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 4
+	mov esi,ebp
+	sub esi,92
+	push esi
+	push 1
+	push [ebp-88]
+	push ebp
+	call @qs1
+	mov dword ptr [ebp-136], eax
+	add esp,16
+	mov dword ptr [ebp-84], 1
+@ttemp59:
+	mov eax,[ebp-84]
+	cmp eax,[ebp-88]
+	jg @ttemp60
+	mov eax, dword ptr [ebp-84]
+	mov dword ptr [ebp-152], eax
+	mov esi,ebp
+	sub esi,4
+	mov edi,[ebp-152]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 1
+	mov eax,[ebp-84]
+	add eax, 1
+	mov [ebp-84], eax
+	jmp @ttemp59
+@ttemp60:
+	mov dword ptr [ebp-84], 1
+	mov eax,[ebp-88]
+	sub eax, 1
+	mov [ebp-156], eax
+@ttemp64:
+	mov eax,[ebp-84]
+	cmp eax,[ebp-156]
+	jg @ttemp65
+	mov eax, dword ptr [ebp-84]
+	mov dword ptr [ebp-172], eax
+	mov eax,[ebp-84]
+	add eax, 1
+	mov [ebp-176], eax
+	mov eax, dword ptr [ebp-176]
+	mov dword ptr [ebp-180], eax
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-172]
+	shl edi,2
+	sub esi,edi
+	mov eax,[esi]
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-180]
+	shl edi,2
+	sub esi,edi
+	cmp eax,[esi]
+	je @ttemp71
+	jmp @ttemp72
+@ttemp71:
+	mov eax,[ebp-84]
+	add eax, 1
+	mov [ebp-200], eax
+	mov eax, dword ptr [ebp-200]
+	mov dword ptr [ebp-204], eax
+	mov eax, dword ptr [ebp-84]
+	mov dword ptr [ebp-208], eax
+	mov eax,[ebp-84]
+	add eax, 1
+	mov [ebp-216], eax
+	mov eax, dword ptr [ebp-216]
+	mov dword ptr [ebp-220], eax
+	mov esi,ebp
+	sub esi,4
+	mov edi,[ebp-208]
+	shl edi,2
+	sub esi,edi
+	mov eax,[esi]
+	mov esi,ebp
+	sub esi,4
+	mov edi,[ebp-220]
+	shl edi,2
+	sub esi,edi
+	add eax, [esi]
+	mov [ebp-212], eax
+	mov eax, dword ptr [ebp-212]
+	mov esi,ebp
+	sub esi,4
+	mov edi,[ebp-204]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], eax
+	mov eax, dword ptr [ebp-84]
+	mov dword ptr [ebp-224], eax
+	mov esi,ebp
+	sub esi,4
+	mov edi,[ebp-224]
+	shl edi,2
+	sub esi,edi
+	mov dword ptr [esi], 0
+	jmp @ttemp73
+@ttemp72:
+@ttemp73:
+	mov eax,[ebp-84]
+	add eax, 1
+	mov [ebp-84], eax
+	jmp @ttemp64
+@ttemp65:
+	mov dword ptr [ebp-84], 1
+@ttemp81:
+	mov eax,[ebp-84]
+	cmp eax,[ebp-88]
+	jg @ttemp82
+	mov eax, dword ptr [ebp-84]
+	mov dword ptr [ebp-240], eax
+	mov esi,ebp
+	sub esi,44
+	mov edi,[ebp-240]
+	shl edi,2
+	sub esi,edi
+	mov eax,[esi]
+	push eax
+	push offset $IOInt
+	call printf
+	mov eax,[ebp-84]
+	add eax, 1
+	mov [ebp-84], eax
+	jmp @ttemp81
+@ttemp82:
+	mov eax,[ebp-92]
+	push eax
+	push offset $IOInt
+	call printf
+	mov eax, [ebp-244]
+
+;Subroutine Epilogue
+	pop esi
+	pop edi
+	mov esp,ebp
+	pop ebp
+	ret
+@main0 endp
+
+start:
+
+;Subroutine Prologue
+push ebp
+mov ebp,esp
+sub esp,0
+push edi
+push esi
+
+;Subroutine Body
+call @main0
+call ExitProcess
+end start
+

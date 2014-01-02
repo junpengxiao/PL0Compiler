@@ -18,19 +18,44 @@ string ttmp;
 bool retract=false;
 int pointer;
 SymbolTable* table=NULL;
+string strlist[MaxN];
+int pstrlist=0;
 void DpR()
 {
     ofstream tmpou("MidCode.txt");
     string tmpst=interResult.str();
     interResult.str("");
     interResult.clear();
-    interResult<<tmpst;
+    stringstream tmpstrsm("");
+    tmpstrsm<<tmpst;
+    while (getline(tmpstrsm, tmpst)) {
+        if (tmpst.find("WRITE")==-1) interResult<<tmpst<<endl;
+        else if (tmpst.find('$')==-1) interResult<<tmpst<<endl;
+        else {
+            strlist[pstrlist]=tmpst.substr(tmpst.find('$')+1,tmpst.length());
+            interResult<<"WRITE $constr"<<pstrlist<<endl;
+            ++pstrlist;
+        }
+    }
+//    while (tmpstrsm>>tmpst) {
+//        if (tmpst=="WRITE") {
+//            interResult<<tmpst<<endl;
+//            tmpstrsm>>tmpst;
+//            if (tmpst[0]=='$') {
+//                strlist[pstrlist]=tmpst.substr(1,tmpst.length());
+//                interResult<<'$constr'<<pstrlist<<endl;
+//                ++pstrlist;
+//            } else interResult<<tmpst<<endl;
+//        } else interResult<<tmpst<<endl;
+//    }
     tmpou<<tmpst;
     tmpou.close();
 }
 bool isNum(string tmp)
 {
-    for (int i=0;i!=tmp.length();++i) if (!isnumber(tmp[i])) return false;
+    for (int i=1;i!=tmp.length();++i) if (!isnumber(tmp[i])) return false;
+    if ((!isnumber(tmp[0]))&&(tmp[0]!='-')&&(tmp[0]!='+')) return  false;
+    if ((!isnumber(tmp[0]))&&tmp.length()<=1) return false;
     return true;
 }
 void Flush()
@@ -124,6 +149,10 @@ void AsHead()
     Set("$IOChar db \"%c\",0"); Flush();
     Set("$IOInt db \"%d\",0"); Flush();
     Set("$Return db 10,13,0");Flush();
+    for (int i=0;i!=pstrlist;++i) {
+        Set("$constr"+IntToString(i)+" db \""+strlist[i]+"\",0");
+        Flush();
+    }
     Flush(); Set(".code");Flush();
 }
 void AsTail()
@@ -134,6 +163,13 @@ void AsTail()
     Set("call ExitProcess"); Flush();
     Set("end start"); Flush();
 }
+void LoadConst()
+{
+    for (int i=0;i!=table->GetTail();++i) if (table->GetItem(i)->GetKind()==constsk) {
+        Set("mov dword ptr [ebp-"+IntToString(table->GetItem(i)->GetOffset())+"],"+IntToString(table->GetItem(i)->GetValue()));
+        Flush();
+    }
+}
 void AsProcSta()
 {
     if (table!=NULL) AsProcEnd();
@@ -142,6 +178,7 @@ void AsProcSta()
     table=&symbolTableList[pointer];
     Flush(); output=""; Set("@"+tmp+IntToString(pointer)+" proc"); Flush();
     CalleeSta(table->GetSize());
+    LoadConst();
 }
 void AsProcEnd()
 {
@@ -217,6 +254,13 @@ void AsRead()
 void AsWrite()
 {
     interResult>>tmp;
+    if (tmp[0]=='$') {
+        Set("push offset "+tmp);
+        Flush();
+        Set("call printf");
+        Flush();
+        return;
+    }
     AsOffset();
     SymbolItem* item=table->GetItem(tmp);
     Set("mov eax,[esi]");
@@ -230,11 +274,11 @@ void AsWrite()
     Set("call printf");
     Flush();
     
-    //---------------------RETURN
-    Set("push offset $Return");
-    Flush();
-    Set("call printf");
-    Flush();
+//    //---------------------RETURN
+//    Set("push offset $Return");
+//    Flush();
+//    Set("call printf");
+//    Flush();
 }
 void CalleeSta(int totOffset)
 {
@@ -249,15 +293,19 @@ void CalleeSta(int totOffset)
 void AsCondi(string type)
 {
     interResult>>tmp;
-    AsOffset();
-    Set("mov eax,[esi]");
+    if (!isNum(tmp)) {
+        AsOffset();
+        Set("mov eax,[esi]");
+    } else Set("mov eax,"+tmp);
     Flush();
     interResult>>tmp;
     interResult>>ttmp>>ttmp;
     if (ttmp!="JZ") ErrorHandler("Assembly: What's the f**k!!!A condition must followed by JZ. I'm CRAZZZZZZZY");
     interResult>>ttmp>>ttmp;
-    AsOffset();
-    Set("cmp eax,[esi]");
+    if (!isNum(tmp)) {
+        AsOffset();
+        Set("cmp eax,[esi]");
+    } else Set("cmp eax,"+tmp);
     Flush();
     if (type=="LSS") Set("jl");
     if (type=="LEQ") Set("jle");
@@ -318,15 +366,18 @@ void AsAlge()
         Flush();
         return;
     }
-    Set("cdq");
-    Flush();
     if (isNum(tmp)){
-        Set("idiv");
-        Set(tmp);
+        Set("cdq");
+        Flush();
+        Set("mov edi,"+tmp);
+        Flush();
+        Set("idiv edi");
     }else {
         AsOffset();
+        Set("cdq");
+        Flush();
         Set("idiv");
-        Set("[esi]");
+        Set("dword ptr [esi]");
     }
     Flush();
     //dest
@@ -382,16 +433,32 @@ void AsCall()
 void AsPush()
 {
     interResult>>tmp;
-    if (tmp.back()!='[') {
-        Set("push");
-        Set("dword ptr [ebp-"+IntToString(table->GetOffset(tmp))+"]");
-    } else {
-        tmp.pop_back();
-        AsOffset();
-        Set("push");
-        Set("esi");
+    if (isNum(tmp)) Set("push "+tmp);
+    else {
+        if (tmp.back()!='[') {
+            AsOffset();
+            Set("push [esi]");
+        } else  {
+            tmp.pop_back();
+            AsOffset();
+            Set("push esi");
+        }
     }
     Flush();
+//    
+//    if (tmp.back()!='[') {
+//        if (isNum(tmp)) Set("push "+tmp);
+//        else {
+//            AsOffset();
+//            Set("push esi");
+//        }
+//    } else {
+//        tmp.pop_back();
+//        AsOffset();
+//        Set("push");
+//        Set("esi");
+//    }
+//    Flush();
 }
 void Assembly()
 {

@@ -1,0 +1,45 @@
+var A: array[10] of integer;
+i,tmp: integer;
+
+procedure qsort(a:integer;b:integer);
+var i, cur,tmp:integer;
+begin
+    if a < b then
+    begin
+        i:=a;
+        cur:=a;
+        while i < b do
+        begin
+            if A[i]<A[b] then
+            begin
+                tmp:=A[cur];
+                A[cur]:=A[i];
+                A[i]:=tmp;
+                cur:=cur+1
+            end;
+            i:=i+1
+        end;
+        tmp:=A[cur];
+        A[cur]:=A[b];
+        A[b]:=tmp;
+        qsort(a, cur-1);
+        qsort(cur+1,b)
+    end
+end;
+
+begin
+    i := 0;
+    while i <= 9 do
+    begin
+        read(tmp);
+	A[i]:=tmp;
+        i:=i+1
+    end;
+    qsort(0,9);
+    i := 0;
+    while i<=9 do
+    begin
+        write(A[i]);
+        i:=i+1
+    end
+end.

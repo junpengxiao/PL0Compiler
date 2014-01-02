@@ -1,0 +1,15 @@
+procedure go(a: integer);
+begin
+
+if a <> 0 then
+begin
+  write(a);
+  go(a-1);
+end
+end;
+
+begin
+
+go(9);
+
+end.

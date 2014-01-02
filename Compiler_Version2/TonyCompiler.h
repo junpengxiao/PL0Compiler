@@ -7,7 +7,7 @@
 #include<string>
 #include "TypeCode.h" // Define tokens code
 //Global Variable Declaration
-#define MaxN 64
+#define MaxN 1000
 #ifdef TONYDEBUG
 #define interResult cout
 #else //intermediate result transmission
@@ -25,7 +25,7 @@ extern int symbolCounter;
 extern std::ifstream infile;//infile stream
 extern std::ofstream oufile;//log stream
 extern std::string output;
-
+extern bool CompileOK;
 //Declare functions
 void GetNextSym();
 char TouchNextChar();

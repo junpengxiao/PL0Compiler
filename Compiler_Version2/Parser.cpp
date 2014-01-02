@@ -61,6 +61,7 @@ bool CheckItem(string str,SymbolKind kind,SymbolTable &table)
 bool CheckItem(string str,bool isArray,SymbolTable &table)
 {
     SymbolItem* item = table.GetItem(str);
+    if (item==NULL) return false;
     if (isArray) return (item->GetKind()== varsk && IsArrayVar(*item));
     return false;
 }
@@ -106,7 +107,7 @@ string NextTempName(SymbolTable &table)
     string rect="ttemp";
     rect=rect+IntToString(tempGenerator++);
     table.Push(rect, varsk);
-    table.SetType(charst);
+    table.SetType(integerst);
     table.FillBack();
     return rect;
 }
@@ -194,15 +195,16 @@ void VarDefinition(SymbolTable &table)
     do {
         GetNextSym();
         if (symbol==COLON) break;
+        if (symbol!=COMMA) ErrorHandler("multi-var should be seperate via ,");
         GetNextSym();
-        if (symbol!=IDEN) ErrorHandler("Error defination should begin with iden"); //throw error while define var
+        if (symbol!=IDEN) ErrorHandler("Error defination should be iden, but you used "+token); //throw error while define var
         table.Push(token,  varsk);
     } while (true);
     GetNextSym();
     if (symbol==INTTK) table.SetType( integerst);
-    if (symbol==CHARTK) table.SetType( charst);
+    else if (symbol==CHARTK) table.SetType( charst);
     //table.SetKind(varsk);
-    if (symbol==ARRAYTK) {
+    else if (symbol==ARRAYTK) {
         GetNextSym();
         if (symbol!=LBRACK) ErrorHandler("Error while define arr,miss [");//Throw Error expect [
         GetNextSym();
@@ -215,9 +217,10 @@ void VarDefinition(SymbolTable &table)
         GetNextSym();
         if (symbol!=INTTK && symbol!=CHARTK) ErrorHandler("define arr miss char or integer"); //Throw error expect char or integer
         if (symbol==INTTK) table.SetType( arrOfInt);
-    }
+    } else ErrorHandler("var type illegal");
     table.FillBack();
     GetNextSym();
+    if (symbol==IDEN) ErrorHandler("miss ;");
 }
 void ProcDeClaration(SymbolTable &table)
 {
@@ -260,7 +263,7 @@ int GetParaList(SymbolTable &table)
         GetNextSym();
     }
     do {
-        if (symbol!=IDEN) ErrorHandler("paralist should split vars via ,");//Error while define paralist ,should have iden
+        if (symbol!=IDEN) ErrorHandler("para list should split vars via ,");//Error while define paralist ,should have iden
         if (ispara) table.Push(token,  parask);
         else table.Push(token,  varsk);
         num++;
@@ -488,7 +491,7 @@ void CheckParalist(SymbolTable &table,int num,SymbolTable &callTable)
         if (symbol==RPARENT) ErrorHandler("function call doesn't fit defination");//Error paralist doesn't fit defination
         if (item->GetKind()== parask) {
             SymbolItem* tmpitem=callTable.GetItem(token);
-            if (!(IsBasicVar(*tmpitem, callTable) || IsArrayVar(*tmpitem))) ErrorHandler("var pass address not expression");//Error var should pass address
+            if (!(IsBasicVar(*tmpitem, callTable) || IsArrayVar(*tmpitem))) ErrorHandler("var should pass address not expression");//Error var should pass address
             if (IsBasicVar(*tmpitem, callTable)) tmp.SetD1(token);
             else if (IsArrayVar(*tmpitem)) tmp.SetD1(GetArrayOffset(callTable));
             else ;//Error var pare should have iden to be parameter

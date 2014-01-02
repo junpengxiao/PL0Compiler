@@ -71,7 +71,7 @@ void Emit::Check(int num) {
     if (table==NULL) return;
     if (dest1.substr(0,5)!="ttemp") return;
     if (num==2 && GetType(sour1)==charst) return SetType(charst);
-    if (num==3 && GetType(sour1)==charst && GetType(sour2)==charst) return SetType(charst);
+    if (num==3 && (GetType(sour1)==charst || GetType(sour2)==charst)) return SetType(charst);
     return SetType(integerst);
 }
 void Emit::UpGradeType()

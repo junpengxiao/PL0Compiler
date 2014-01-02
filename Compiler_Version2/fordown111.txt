@@ -1,0 +1,9 @@
+const a=6;
+var x,y,m :integer;
+begin
+
+x:=a;
+for y:=100 downto 1 do x:=x+1;
+write("x=",x);
+end
+.

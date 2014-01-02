@@ -19,10 +19,19 @@ int symbolCounter;
 ifstream infile("IfTest.pas");//infile stream
 ofstream oufile("AsOutput.txt");//log stream
 stringstream interResult,optlv1;
+bool CompileOK=true;
+int lasterr=-1;
+string lastmess="";
 void ErrorHandler(string str)
 {
-    cout<<"Error at line" << lineCounter<<" The "<<strlnPtr<<" Char with reason : "<<str<<endl;
-    exit(-1);
+    if (lineCounter!=lasterr && str!=lastmess) {
+        cout<<"Error at line" << lineCounter<<" The "<<strlnPtr<<" Char with reason : "<<str<<endl;
+        CompileOK=false;
+        lasterr=lineCounter;
+        lastmess=str;
+    }
+    if (str=="end of file") exit(0);
+    //exit(-1);
 }
 char TouchNextChar() { return ((unsigned int)strlnPtr<strline.length())?strline[strlnPtr]:'\0'; }
 bool isSpace(char ch) { return ch==' '; }

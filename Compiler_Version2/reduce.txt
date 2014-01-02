@@ -1,0 +1,18 @@
+var x: integer;
+function reduce (a:integer):integer;
+begin
+		if a>9 then
+		
+			write("a=",a)
+	
+		else
+
+			a := reduce(a*2);
+	
+		reduce := a
+end;
+
+begin
+		x:=reduce(2);
+		write("x=",x)
+end.

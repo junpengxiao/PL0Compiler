@@ -1,0 +1,8 @@
+procedure proc1(var i :integer);
+begin
+	i := 1;
+end;
+begin
+
+proc1(3*3)
+end.

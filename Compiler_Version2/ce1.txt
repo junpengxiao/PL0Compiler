@@ -1,0 +1,12 @@
+var l, m:integer;
+	arri:array[10] of integer;
+begin
+	read(l, m);
+	arri[0] := l;
+	arri[1] := m;
+	write(m);
+	write(l);
+	write(arri[0]);
+	write(arri[1])
+
+end.

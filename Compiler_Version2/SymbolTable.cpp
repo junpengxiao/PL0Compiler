@@ -263,8 +263,8 @@ SymbolItem* SymbolTable::GetItem(int i) {
 SymbolItem* SymbolTable::GetItem(string name) {
     for (int i=0;i!=this->ptable;++i) if (this->table[i].GetName()==name) return (&(this->table[i]));
     if (this->father!=NULL) return (this->father->GetItem(name));
-    ErrorHandler("Can not find the var named "+name);
-    return NULL ; //Error can not find a symbol named name...
+    ErrorHandler("Can not find the var named "+name+"\n This may happen when you use illegal value while calling proc/func with para type");
+    return symbolTableList[0].GetItem(0); //Error can not find a symbol named name...
 }
 string SymbolTable::GetName() {
     return this->name;

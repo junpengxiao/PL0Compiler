@@ -1,0 +1,12 @@
+const a=4;
+var x:integer;
+
+procedure add(var x,y:integer);
+var sum:integer;
+begin
+sum:=x+y;
+add:=sum
+end
+
+x:=add(2,4);
+.

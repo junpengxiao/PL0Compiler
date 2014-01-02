@@ -20,7 +20,7 @@ int main(int argc, const char * argv[])
     infile.open(tmp);
     GetNextSym();
     Program();
-    Assembly();
+    if (CompileOK) Assembly();
     return 0;
 }
 

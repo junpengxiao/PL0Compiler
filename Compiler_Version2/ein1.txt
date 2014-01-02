@@ -1,0 +1,11 @@
+var a, b:integer;
+	arr:array[10]  of integer;
+begin
+	read(a,b);
+	write("nihao world");
+	write(a);
+	arr[3] := a;
+	arr[5] := b;
+	write(arr[3])
+
+end.

@@ -1,0 +1,16 @@
+var x,y:integer;
+	arr:array[10] of integer;	
+function func1(x:integer):integer;
+	begin
+		if x <= 1 then
+			func1 := 1
+		else
+			func1 := x * func1(x - 1);
+	end;
+begin
+	read(x);
+	arr[9] := func1(x);
+	write(arr[9]);
+	write(x);
+	write("  hello world  ");
+end.
